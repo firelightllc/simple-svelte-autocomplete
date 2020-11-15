@@ -7,41 +7,41 @@
   export let keywordsFieldName = labelFieldName;
   export let valueFieldName = undefined;
 
-  export let labelFunction = function(item) {
+  export let labelFunction = function (item) {
     if (item === undefined || item === null) {
       return "";
     }
     return labelFieldName ? item[labelFieldName] : item;
   };
 
-  export let keywordsFunction = function(item) {
+  export let keywordsFunction = function (item) {
     if (item === undefined || item === null) {
       return "";
     }
     return keywordsFieldName ? item[keywordsFieldName] : labelFunction(item);
   };
 
-  export let valueFunction = function(item) {
+  export let valueFunction = function (item) {
     if (item === undefined || item === null) {
       return item;
     }
     return valueFieldName ? item[valueFieldName] : item;
   };
 
-  export let keywordsCleanFunction = function(keywords) {
+  export let keywordsCleanFunction = function (keywords) {
     return keywords;
   };
 
-  export let textCleanFunction = function(userEnteredText) {
+  export let textCleanFunction = function (userEnteredText) {
     return userEnteredText;
   };
 
   export let searchFunction = false;
 
-  export let beforeChange = function(oldSelectedItem, newSelectedItem) {
+  export let beforeChange = function (oldSelectedItem, newSelectedItem) {
     return true;
   };
-  export let onChange = function(newSelectedItem) {};
+  export let onChange = function (newSelectedItem) {};
 
   export let selectFirstIfEmpty = false;
 
@@ -122,6 +122,9 @@
 
   // option to show clear selection button
   export let showClear = false;
+
+  // option to set autocomplete attribute
+  export let autocomplete = "false";
 
   // adds the disabled tag to the HTML input
   export let disabled = false;
@@ -206,7 +209,7 @@
       // item label
       label: safeLabelFunction(item),
       // store reference to the origial item
-      item: item
+      item: item,
     };
   }
 
@@ -271,14 +274,14 @@
 
     const searchWords = textFiltered.split(" ");
 
-    let tempfilteredListItems = listItems.filter(listItem => {
+    let tempfilteredListItems = listItems.filter((listItem) => {
       if (!listItem) {
         return false;
       }
       const itemKeywords = listItem.keywords;
 
       let matches = 0;
-      searchWords.forEach(searchWord => {
+      searchWords.forEach((searchWord) => {
         if (itemKeywords.includes(searchWord)) {
           matches++;
         }
@@ -423,7 +426,7 @@
       ShiftTab: opened ? up.bind(this) : null,
       ArrowDown: down.bind(this),
       ArrowUp: up.bind(this),
-      Escape: onEsc.bind(this)
+      Escape: onEsc.bind(this),
     };
     const fn = fnmap[key];
     if (typeof fn === "function") {
@@ -589,10 +592,10 @@
     let repl = "";
     for (; n < len; n++) repl += n % 2 ? `<b>$${n}</b>` : `$${n}`;
 
-    return i => {
+    return (i) => {
       const newI = Object.assign({ highlighted: {} }, i);
       if (fields) {
-        fields.forEach(f => {
+        fields.forEach((f) => {
           if (!newI[f]) return;
           newI.highlighted[f] = newI[f].replace(reg, repl);
         });
@@ -724,6 +727,7 @@
     id={inputId ? inputId : ''}
     {placeholder}
     {name}
+    {autocomplete}
     {disabled}
     {title}
     bind:this={input}
@@ -759,7 +763,8 @@
 
       {#if maxItemsToShowInList > 0 && filteredListItems.length > maxItemsToShowInList}
         <div class="autocomplete-list-item-no-results">
-          ...{filteredListItems.length - maxItemsToShowInList} results not shown
+          ...{filteredListItems.length - maxItemsToShowInList}
+          results not shown
         </div>
       {/if}
     {:else if noResultsText}
