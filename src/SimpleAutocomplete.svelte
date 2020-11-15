@@ -124,7 +124,7 @@
   export let showClear = false;
 
   // option to set autocomplete attribute
-  export let autocomplete = "false";
+  export let autocomplete = "off";
 
   // adds the disabled tag to the HTML input
   export let disabled = false;
